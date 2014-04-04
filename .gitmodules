@@ -1,0 +1,3 @@
+[submodule "smartbox"]
+	path = smartbox
+	url = ../smartbox.git
