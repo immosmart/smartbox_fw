@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="smartbox/src/libs/jquery-1.10.2.min.js"></script>
+    <script src="smartbox/src/libs/lodash.compat.min.js"></script>
+    <script src="frontbone/bin/frontbone.js"></script>
+    <script src="smartbox/dist/smartbox.js"></script>
+
+    <script src="src/js/tabs.js"></script>
+    <script src="src/js/app.js"></script>
+    <script>
+        SB(function () {
+
+
+
+            App.setScenesContainer('#scenes');
+            App.setHeader('#header', '.th');
+
+            App.addScene({
+                isDefault: true,
+                name: 'home',
+                el: '#home'
+            });
+
+            App.addScene({
+                name: 'movies',
+                el: '#movies',
+                init: function () {
+                    new TabsHead(this.$('.tabs_head'), this.$('.inner_container'), '.th');
+                },
+                backScene: 'home'
+            });
+
+            App.addScene({
+                name: 'search',
+                el: '#search',
+                backScene: 'home'
+            });
+            App.addScene({
+                name: 'cabinet',
+                el: '#cabinet',
+                backScene: 'home'
+            });
+
+
+
+
+        });
+    </script>
+
+    <style>
+        .th {
+            display: inline-block;
+            cursor: pointer;
+            padding: 10px;
+            border: 1px solid crimson;
+            background: #f51443;
+            margin: 5px;
+            border-radius: 5px;;
+        }
+
+        .th.cur {
+            color: green;
+        }
+
+        .th.focus {
+            box-shadow: 0 0 5px green;
+        }
+
+        .th2 {
+            display: block;
+        }
+
+        .tabs_head{
+            width: 200px;
+            float: left;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="header">
+    <div class="th nav-item">home</div>
+    <div class="th nav-item">movies</div>
+    <div class="th nav-item">search</div>
+    <div class="th nav-item">cabinet</div>
+</div>
+<div id="scenes">
+    <div class="tb" id="home">1</div>
+    <div class="tb" id="movies">
+        <div class="tabs_head">
+            <div class="th th2 nav-item">action</div>
+            <div class="th th2 nav-item">drama</div>
+            <div class="th th2 nav-item">horror</div>
+            <div class="th th2 nav-item">adventure</div>
+        </div>
+        <div class="inner_container">
+            <div class="tb">1</div>
+            <div class="tb">2</div>
+            <div class="tb">3</div>
+            <div class="tb">4</div>
+        </div>
+    </div>
+    <div class="tb" id="search">3</div>
+    <div class="tb" id="cabinet">4</div>
+</div>
+
+</body>
+</html>
