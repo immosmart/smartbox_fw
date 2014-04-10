@@ -26,7 +26,7 @@
                 }
             },
             el: 'body',
-            initialise: function () {
+            initialize: function () {
                 this.$wrap = $('.wrap');
             },
             toggleView: function () {
