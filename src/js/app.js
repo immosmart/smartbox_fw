@@ -76,11 +76,7 @@ window.Scene = TabContent.extend({
 
     startEl: undefined,
 
-    initialize: function () {
-        this._super();
-        var self = this;
-
-    },
+    autoParseBinds: true,
 
     back: function (e) {
         if (!this.backScene) {

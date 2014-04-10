@@ -28,6 +28,7 @@
             el: 'body',
             initialize: function () {
                 this.$wrap = $('.wrap');
+                this.parse();
             },
             toggleView: function () {
                 if (this.isShown) {
