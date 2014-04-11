@@ -89,7 +89,7 @@ h2 {
 }
 
 .menu-item_green.focus,
-.video-item.focus {
+.scene_video.focus .video-item.cur {
     background: #61c791;
 }
 

@@ -75,8 +75,7 @@ window.Scene = TabContent.extend({
 
 
     startEl: undefined,
-
-    autoParseBinds: true,
+    lazyParseBinds: true,
 
     back: function (e) {
         if (!this.backScene) {

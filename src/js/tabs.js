@@ -9,6 +9,8 @@ var TabContent = ViewModel.extend({
     startEl: null,
 
 
+    lazyParseBinds: false,
+
     initialize: function () {
         this.$el.data('tabContent', this);
     },
@@ -28,6 +30,9 @@ var TabContent = ViewModel.extend({
         if (!this.isInited) {
             this.navContainer = $(this.navContainer);
             this.init();
+            if (this.lazyParseBinds) {
+                this.parse();
+            }
             this.isInited = true;
         }
 
