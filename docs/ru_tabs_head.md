@@ -7,12 +7,12 @@
 
 <a href="#Публичные-свойства">`Публичные свойства`</a>
 * <a href="#highlightclass">`highlightClass`</a>
-* <a href="#currentiIndex">`currentIndex`</a>
+* <a href="#currentindex">`currentIndex`</a>
 
 <a href="#публичные-методы">`Публичные методы`</a>
-* <a href="#tabshead(headsContainer, bodiesContainer, headsSelector)">`TabsHead(headsContainer, bodiesContainer, headsSelector)`</a>
-* <a href="#add">`add()`</a>
-* <a href="#show">`show()`</a>
+* <a href="#tabsheadheadscontainer-bodiescontainer-headsselector">`TabsHead(headsContainer, bodiesContainer, headsSelector)`</a>
+* <a href="#addhead-body">`add(head, body)`</a>
+* <a href="#showindex">`show(index)`</a>
 
 
 
