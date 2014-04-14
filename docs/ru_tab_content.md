@@ -10,7 +10,7 @@
 * <a href="#startel">`startEl`</a>
 * <a href="#lazyparsebinds">`lazyParseBinds`</a>
 
-<a href="#публичные-методы">`Публичные методы`</a>
+<a href="#Публичные-методы">`Публичные методы`</a>
 * <a href="#init">`init()`</a>
 * <a href="#focus">`focus()`</a>
 * <a href="#blur">`blur()`</a>
