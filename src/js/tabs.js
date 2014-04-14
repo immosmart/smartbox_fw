@@ -92,5 +92,12 @@ var TabsHead = ViewModel.extend({
             this.views[index].focus();
 
         this.currentIndex = index;
+
+        var startEl = this.currentScene.startEl;
+        if (startEl) {
+            $$nav.current(startEl);
+        } else {
+            $$nav.findSome();
+        }
     }
 });

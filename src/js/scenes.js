@@ -51,12 +51,6 @@ window.App = TabsHead.create({
     show: function (index) {
         this._super(index);
         this.currentScene = this.views[index];
-        var startEl = this.currentScene.startEl;
-        if (startEl) {
-            $$nav.current(startEl);
-        } else {
-            $$nav.findSome();
-        }
     }
 });
 
