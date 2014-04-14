@@ -19,7 +19,7 @@
         <li data-content='input' class="nav-item">Inputs</li>
         <li data-content='navigation' class="nav-item">Navigation</li>
     </ul>
-    <div class=red: Never be shown">
+    <div legend="red: Never be shown">
         <div class="nav-item">Button</div>
     </div>
 </div>
