@@ -82,7 +82,7 @@ new TabsHead('.tabs_head', '.bodies_container', '.link');
 #### Аргументы
 `head` *jQuery object*: ссылка, которая соответсвует вкладке и будет получать класс `headsSelector`. Элемент не будет добавлен в `headsContainer`
 
-`body` *jQuery object*: контент вкладки, который будет удален из DOM, и будет показан при переключении на вкладку.
+`body` *jQuery object*: контент вкладки.
 
 * * *
 
