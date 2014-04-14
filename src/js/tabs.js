@@ -18,7 +18,7 @@ var TabContent = ViewModel.extend({
     },
 
 
-    voiceSettings: undefined,
+    //voiceSettings: undefined,
     /**
      * Установка фокуса для сцены, фокусировка на любом из:
      *    - начальный активный элемент this.startEl,
@@ -33,7 +33,7 @@ var TabContent = ViewModel.extend({
             this.isInited = true;
         }
 
-        this.navContainer.voiceLink(this.voiceSettings);
+        //this.navContainer.voiceLink(this.voiceSettings);
     },
     blur: function () {
     }
@@ -88,16 +88,20 @@ var TabsHead = ViewModel.extend({
         this.bodies[index].appendTo(this.bodiesContainer);
 
 
-        if (this.views[index])
+        if (this.views[index]){
             this.views[index].focus();
+
+            var startEl = this.views[index].startEl;
+            if (startEl) {
+                $$nav.current(startEl);
+            } else {
+                $$nav.findSome();
+            }
+        }
+
 
         this.currentIndex = index;
 
-        var startEl = this.currentScene.startEl;
-        if (startEl) {
-            $$nav.current(startEl);
-        } else {
-            $$nav.findSome();
-        }
+
     }
 });
