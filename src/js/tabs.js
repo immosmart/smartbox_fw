@@ -18,8 +18,6 @@ var TabContent = ViewModel.extend({
     },
 
 
-    navContainer: 'body',
-
     voiceSettings: undefined,
     /**
      * Установка фокуса для сцены, фокусировка на любом из:
@@ -28,7 +26,6 @@ var TabContent = ViewModel.extend({
     focus: function () {
 
         if (!this.isInited) {
-            this.navContainer = $(this.navContainer);
             this.init();
             if (this.lazyParseBinds) {
                 this.parse();
