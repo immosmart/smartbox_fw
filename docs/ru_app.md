@@ -9,11 +9,11 @@
 * <a href="#currentscene">`currentScene`</a>
 
 <a href="#Публичные-методы">`Публичные методы`</a>
-* <a href="#setscenescontainer">`setScenesContainer(bodiesContainer)`</a>
-* <a href="#setHeader">`setHeader($header, headsSelector)`</a>
-* <a href="#addScene">`setHeader(prototype)`</a>
-* <a href="#setScene">`setScene(name)`</a>
-* <a href="#show">`show(index)`</a>
+* <a href="#setscenescontainerbodiescontainer">`setScenesContainer(bodiesContainer)`</a>
+* <a href="#setheaderheader-headsselector">`setHeader($header, headsSelector)`</a>
+* <a href="#addsceneprototype">`addScene(prototype)`</a>
+* <a href="#setscenename">`setScene(name)`</a>
+* <a href="#showindex">`show(index)`</a>
 
 
 ##Публичные свойства
