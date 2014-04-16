@@ -1,6 +1,3 @@
 [submodule "smartbox"]
 	path = smartbox
 	url = ../smartbox.git
-[submodule "frontbone"]
-	path = frontbone
-	url = ../../artempoletsky/Frontbone.git
