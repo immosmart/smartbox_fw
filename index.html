@@ -13,12 +13,13 @@
     <script type="text/javascript" src="smartbox/demo/asset/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="smartbox/demo/asset/lodash.compat.min.js"></script>
     <script type="text/javascript" src="smartbox/demo/asset/json2.js"></script>
-    <script type="text/javascript" src="frontbone/bin/frontbone.js"></script>
+    <script type="text/javascript" src="lib/backbone-min.js"></script>
+    <script type="text/javascript" src="lib/backbone.epoxy.min.js"></script>
     <script type="text/javascript" src="smartbox/dist/smartbox.js"></script>
     <script type="text/javascript" src="src/js/tabs.js"></script>
     <script type="text/javascript" src="src/js/scenes.js"></script>
     <script type="text/javascript" src="src/js/legend.bind.js"></script>
-    <script type="text/javascript" src="src/js/carousel.bind.js"></script>
+    <!--script type="text/javascript" src="src/js/carousel.bind.js"></script-->
 
     <script type="text/javascript" src="smartbox/demo/demoApp/videos.js"></script>
     <script type="text/javascript" src="demo/code.js"></script>
@@ -35,21 +36,23 @@
         <div class="logo"></div>
 
         <ul class="menu-items" data-nav_type="vbox" data-nav_loop="true"
-            legend="enter: Show content, blue: Show/hide menu">
-            <li data-content='video' class="menu-item menu-item_green nav-item">Videos</li>
-            <li data-content='input' class="menu-item menu-item_blue nav-item">Inputs</li>
-            <li data-content='navigation' class="menu-item menu-item_red nav-item">Navigation</li>
+            data-bind="legend:'enter: Show content, blue: Show/hide menu'"
+                >
+            <li class="menu-item menu-item_green nav-item">Videos</li>
+            <li class="menu-item menu-item_blue nav-item">Inputs</li>
+            <li class="menu-item menu-item_red nav-item">Navigation</li>
         </ul>
     </div>
 
-    <div class="scenes-wrapper" legend="blue: Show/hide menu">
-        <div class="scene scene_video js-scene-video nav-item" legend="enter: Play video"
-             data-bind="carouselList: {
+    <div class="scenes-wrapper" data-bind="legend:'blue:Show/hide menu'" >
+        <div class="scene scene_video js-scene-video nav-item"
+             data-bind="legend:'enter: Play video'"
+             data-bixnd="carouselList: {
                 size: 10
              }">
-            <div class="video-item" data-bind="html: title"></div>
+            <div class="video-item" data-bidnd="html: title"></div>
         </div>
-        <div class="scene scene_input js-scene-input" legend="enter: Show keyboard, number: Num input">
+        <div class="scene scene_input js-scene-input" data-bind="legend: 'enter:Show keyboard, number: Num input'" >
             <div class="input-example">
                 <h2>Standart input</h2>
                 <input class="input-item js-input-1 nav-item"/>
@@ -68,7 +71,7 @@
             </div>
         </div>
         <div class="scene js-scene-navigation">
-            <ul class="navigation-items" legend="move: Navigate">
+            <ul class="navigation-items" data-bind="legend: 'move: Navigate'" >
                 <li class="navigation-item nav-item">1</li>
                 <li class="navigation-item nav-item">2</li>
                 <li class="navigation-item nav-item">3</li>

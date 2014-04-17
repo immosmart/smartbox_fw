@@ -1,4 +1,4 @@
-var TabContent = ViewModel.extend({
+var TabContent = Backbone.Epoxy.View.extend({
     //for lazy init
     isInited: false,
 
@@ -27,10 +27,10 @@ var TabContent = ViewModel.extend({
 
         if (!this.isInited) {
             this.init();
-            if (this.lazyParseBinds) {
+            /*if (this.lazyParseBinds) {
                 this.parse();
             }
-            this.isInited = true;
+            this.isInited = true;*/
         }
 
         //this.navContainer.voiceLink(this.voiceSettings);
@@ -40,7 +40,7 @@ var TabContent = ViewModel.extend({
 });
 
 
-var TabsHead = ViewModel.extend({
+var TabsHead = Backbone.Epoxy.View.extend({
     heads: [],
     bodies: [],
     views: [],
@@ -57,7 +57,7 @@ var TabsHead = ViewModel.extend({
         this.bodies = [];
         this.views = [];
         this.el = headsContainer;
-        this._super();
+        Backbone.Epoxy.View.prototype.constructor.apply(this);
         var self = this;
         this.bodiesContainer = $(bodiesContainer);
         var bodiesChildren = this.bodiesContainer.children();

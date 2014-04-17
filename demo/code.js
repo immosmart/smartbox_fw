@@ -11,7 +11,7 @@
         },
 
         init: function () {
-            this.collection = new Collection(App.videos);
+            this.collection = new Backbone.Collection(App.videos);
         },
         // handler for click event
         onItemClick: function (e) {
@@ -62,14 +62,14 @@
             'nav_focus .navigation-item': 'onFocus',
             'nav_blur .navigation-item': 'onBlur'
         },
+        initialize: function(){
+            this.$info=this.$('.navigation-info');
+        },
         onFocus: function (e) {
             this.$info.html(e.currentTarget.innerHTML);
         },
         onBlur: function (e) {
             this.$info.html('');
-        },
-        shortcuts: {
-            $info: '.navigation-info'
         }
     });
 
@@ -85,7 +85,7 @@
         App.setScenesContainer('.scenes-wrapper');
         App.setHeader('.menu-items', '.menu-item');
 
-        ViewModel.create({
+        new (Backbone.Epoxy.View.extend({
             events: {
                 'nav_key:blue': 'toggleView',
                 'nav_key:stop': function () {
@@ -115,7 +115,7 @@
                 }
                 this.isShown = !this.isShown;
             }
-        });
+        }))();
 
         // toggling background when player start/stop
         Player.on('ready', function () {

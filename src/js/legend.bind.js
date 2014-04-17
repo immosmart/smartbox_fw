@@ -7,31 +7,43 @@
         });
     }
 
-    ViewModel.customAttributes.legend = function ($el, value, context, addArgs) {
 
-        $el.removeAttr('legend');
-        var pairs = _.foldl(value.split(/\s*,\s*/), function (result, pair) {
-            var splt = pair.split(/\s*:\s*/);
-            result[splt[0]] = splt[1];
-            return result;
-        }, {});
+    Backbone.Epoxy.binding.addHandler("legend", {
+        init: function( $element, value, bindings, context ) {
+            var pairs = _.foldl(value.split(/\s*,\s*/), function (result, pair) {
+                var splt = pair.split(/\s*:\s*/);
+                result[splt[0]] = splt[1];
+                return result;
+            }, {});
 
 
-        var $current = $$nav.current();
-        if ($current && $.contains($el[0], $current[0])) {
-            setPairs(pairs)
-        }
-        $el.on({
-            'nav_focus': function (e) {
-                setPairs(pairs);
-            },
-            'nav_blur': function (e) {
-                _.each(pairs, function (value, key) {
-                    keys[key](0);
-                });
+
+            var $current = $$nav.current();
+            if ($current && $.contains($element[0], $current[0])) {
+                setPairs(pairs)
             }
-        });
-    };
+            $element.on({
+                'nav_focus': function (e) {
+                    setPairs(pairs);
+                },
+                'nav_blur': function (e) {
+                    _.each(pairs, function (value, key) {
+                        keys[key](0);
+                    });
+                }
+            });
+        },
+        get: function( $element, value, event ) {
+
+        },
+        set: function( $element, value ) {
+
+        },
+        clean: function() {
+            // Cleanup the binding handler...
+        }
+    });
+
 
 
     $(function () {
