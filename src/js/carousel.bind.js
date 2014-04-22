@@ -208,7 +208,7 @@
 
             this.viewModel = new (Backbone.Epoxy.Model.extend({
                 defaults: {
-                    _index: 0,
+                    _index: undefined,
                     page: 0,
                     length: 0
                 },
@@ -271,6 +271,10 @@
                 $cur = self.$container.children().eq(val).addClass('cur');
             });
 
+
+            _.defer(function(){
+               self.viewModel.set('index', 0);
+            });
 
             if (!this.disableVoiceRefresh) {
                 this.viewModel.on('change:page', function () {
