@@ -9,7 +9,7 @@ window.App = new (TabsHead.extend({
 
         var self = this;
 
-        Backbone.Epoxy.View.prototype.constructor.apply(self, arguments)
+        Backbone.View.prototype.constructor.apply(self, arguments)
         //ViewModel.prototype._constructor.apply();
 
 

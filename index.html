@@ -14,12 +14,12 @@
     <script type="text/javascript" src="smartbox/demo/asset/lodash.compat.min.js"></script>
     <script type="text/javascript" src="smartbox/demo/asset/json2.js"></script>
     <script type="text/javascript" src="lib/backbone-min.js"></script>
-    <script type="text/javascript" src="lib/backbone.epoxy.min.js"></script>
+    <script type="text/javascript" src="lib/backbone.epoxy.js"></script>
     <script type="text/javascript" src="smartbox/dist/smartbox.js"></script>
     <script type="text/javascript" src="src/js/tabs.js"></script>
     <script type="text/javascript" src="src/js/scenes.js"></script>
     <script type="text/javascript" src="src/js/legend.bind.js"></script>
-    <!--script type="text/javascript" src="src/js/carousel.bind.js"></script-->
+    <script type="text/javascript" src="src/js/carousel.bind.js"></script>
 
     <script type="text/javascript" src="smartbox/demo/demoApp/videos.js"></script>
     <script type="text/javascript" src="demo/code.js"></script>
@@ -46,11 +46,11 @@
 
     <div class="scenes-wrapper" data-bind="legend:'blue:Show/hide menu'" >
         <div class="scene scene_video js-scene-video nav-item"
-             data-bind="legend:'enter: Play video'"
-             data-bixnd="carouselList: {
-                size: 10
+             data-bind="legend:'enter: Play video', carouselList: {
+                size: 10,
+                collection: $collection
              }">
-            <div class="video-item" data-bidnd="html: title"></div>
+            <div class="video-item" data-bind="html: title"></div>
         </div>
         <div class="scene scene_input js-scene-input" data-bind="legend: 'enter:Show keyboard, number: Num input'" >
             <div class="input-example">

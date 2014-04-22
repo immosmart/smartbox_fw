@@ -2,6 +2,12 @@
     "use strict";
 
 
+    var FilmModel=Backbone.Epoxy.Model.extend({
+        defaults: {
+            title:""
+        }
+    });
+
     App.addScene({
         name: 'videos',
         isDefault: true,
@@ -10,8 +16,10 @@
             'click .video-item': 'onItemClick'
         },
 
-        init: function () {
-            this.collection = new Backbone.Collection(App.videos);
+        initialize: function () {
+            this.collection = new Backbone.Collection(App.videos,{
+                model: FilmModel
+            });
         },
         // handler for click event
         onItemClick: function (e) {
@@ -85,7 +93,7 @@
         App.setScenesContainer('.scenes-wrapper');
         App.setHeader('.menu-items', '.menu-item');
 
-        new (Backbone.Epoxy.View.extend({
+        new (Backbone.View.extend({
             events: {
                 'nav_key:blue': 'toggleView',
                 'nav_key:stop': function () {
@@ -100,7 +108,6 @@
                     SB.exit();
                 }
             },
-            autoParseBinds: true,
             el: 'body',
             shortcuts: {
                 $wrap: '.wrap'
