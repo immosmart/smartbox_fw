@@ -104,7 +104,7 @@
             }
             if (this.visibleLength - index - 1 <= this.offsetNext) {
                 this.shiftNext();
-                //this.index.fire();
+                vm.trigger('change:index', vm, index);
                 return this;
             }
             if (index < this.visibleLength - 1) {
@@ -119,7 +119,7 @@
             var vm = this.viewModel, index = vm.get('index');
             if (index <= this.offsetNext) {
                 this.shiftPrev();
-                //this.index.fire();
+                vm.trigger('change:index', vm, index);
                 return this;
             }
             if (index > 0) {
@@ -129,11 +129,12 @@
         },
         shiftNext: function () {
             var vm = this.viewModel;
-            if (!vm.get('canScrollForward')) {
+            if (!vm.get('canScrollForw')) {
                 return this;
             }
             var page = vm.get('page');
-            this.collection.push(this._collection.at(page + this.visibleLength)).shift();
+            this.collection.push(this._collection.at(page + this.visibleLength))
+            this.collection.shift();
             vm.set('page', page + 1);
             return this;
         },
@@ -142,9 +143,15 @@
             if (!vm.get('canScrollBack')) {
                 return this;
             }
-            var page = vm.get('page');
-            vm.set(++page);
-            this.collection.unshift(this.collection.at(page)).pop();
+            var page = vm.get('page')-1;
+
+            //console.log(this.collection.indexOf(this._collection.at(page)));
+            this.collection.unshift(this._collection.at(page));
+            this.collection.pop();
+            //console.log(this._collection.at(page), this.collection.length);
+            vm.set('page',page);
+
+            //console.log(this.collection.length);
             return this;
         },
         setPage: function (page) {

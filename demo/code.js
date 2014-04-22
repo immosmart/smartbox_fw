@@ -17,9 +17,16 @@
         },
 
         initialize: function () {
-            this.collection = new Backbone.Collection(App.videos,{
+
+            var self=this;
+
+            self.collection = new Backbone.Collection([],{
                 model: FilmModel
             });
+            $.getJSON('demo/videos.json', function(data){
+                self.collection.reset(data);
+            })
+
         },
         // handler for click event
         onItemClick: function (e) {
