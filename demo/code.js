@@ -12,9 +12,7 @@
         name: 'videos',
         isDefault: true,
         el: '.js-scene-video',
-        events: {
-            'click .video-item': 'onItemClick'
-        },
+
 
         initialize: function () {
 
@@ -26,7 +24,9 @@
             $.getJSON('demo/videos.json', function(data){
                 self.collection.reset(data);
             })
-
+            self.collection.on('select', function(model){
+                Player.play(model.toJSON());
+            });
         },
         // handler for click event
         onItemClick: function (e) {

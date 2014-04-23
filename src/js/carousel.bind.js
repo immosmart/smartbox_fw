@@ -8,14 +8,19 @@
         },
         onEnter: function (e) {
             e.stopPropagation();
-            this.$el.children().eq(this.index()).click();
+            this.$el.children().eq(this.viewModel.get('index')).click();
         },
         mouseenter: function (e) {
             this.viewModel.set('index', $(e.currentTarget).index());
         },
+        onClick: function (e) {
+            var index = $(e.currentTarget).index(),
+                collectionIndex = this.viewModel.get('page') + index;
+            this._collection.trigger('select', this._collection.at(collectionIndex), collectionIndex);
+        },
 
 
-        itemSelector: '.sr-item',
+        itemSelector: '',
         /**
          * Зацикливание
          */
@@ -143,19 +148,19 @@
             if (!vm.get('canScrollBack')) {
                 return this;
             }
-            var page = vm.get('page')-1;
+            var page = vm.get('page') - 1;
 
             //console.log(this.collection.indexOf(this._collection.at(page)));
             this.collection.unshift(this._collection.at(page));
             this.collection.pop();
             //console.log(this._collection.at(page), this.collection.length);
-            vm.set('page',page);
+            vm.set('page', page);
 
             //console.log(this.collection.length);
             return this;
         },
         setPage: function (page) {
-            var maxPage=this.viewModel.get('maxPage')
+            var maxPage = this.viewModel.get('maxPage')
             if (page > maxPage) {
                 page = maxPage;
             }
@@ -184,7 +189,10 @@
                 'nav_key:right': 'onNext'
             });
 
-            this.events['mouseenter .' + options.className] = 'mouseenter'
+            this.events['mouseenter .' + options.className] = 'mouseenter';
+            this.events['click .' + options.className] = 'onClick';
+
+            this.itemSelector = options.className;
 
             this.delegateEvents();
 
@@ -279,8 +287,8 @@
             });
 
 
-            _.defer(function(){
-               self.viewModel.set('index', 0);
+            _.defer(function () {
+                self.viewModel.set('index', 0);
             });
 
             if (!this.disableVoiceRefresh) {
