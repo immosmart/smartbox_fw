@@ -62,3 +62,17 @@
      <div class="video-item" data-bind="html: title"></div>
  </div>
  ```
+ 
+ 
+ По клику на элементе в карусели в коллекцию отправляется событие `select`
+ 
+ ```js
+ App.addScene({
+   init: function(){
+     this.collection.on('select', function(model, index){
+       
+     });
+   }
+ });
+ ```
+ 
