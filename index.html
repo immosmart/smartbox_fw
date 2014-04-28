@@ -16,13 +16,17 @@
     <script type="text/javascript" src="lib/backbone-min.js"></script>
     <script type="text/javascript" src="lib/backbone.epoxy.js"></script>
     <script type="text/javascript" src="smartbox/dist/smartbox.js"></script>
+    <script type="text/javascript" src="lib/fpsmeter.min.js"></script>
+
     <script type="text/javascript" src="src/js/tabs.js"></script>
     <script type="text/javascript" src="src/js/scenes.js"></script>
     <script type="text/javascript" src="src/js/legend.bind.js"></script>
     <script type="text/javascript" src="src/js/carousel.bind.js"></script>
 
+
     <script type="text/javascript" src="smartbox/demo/demoApp/videos.js"></script>
     <script type="text/javascript" src="demo/code.js"></script>
+    <script type="text/javascript" src="demo/test.js"></script>
 </head>
 <body>
 
@@ -43,12 +47,11 @@
             <li class="menu-item menu-item_red nav-item">Navigation</li>
         </ul>
     </div>
-
+    <a href="#" target="_blank"></a>
     <div class="scenes-wrapper" data-bind="legend:'blue:Show/hide menu'" >
         <div class="scene scene_video js-scene-video nav-item"
              data-bind="legend:'enter: Play video', carouselList: {
-                size: 10,
-                collection: $collection
+                size: 13
              }">
             <div class="video-item" data-bind="html: title"></div>
         </div>
