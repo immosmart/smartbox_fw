@@ -21,17 +21,23 @@
             self.collection = new Backbone.Collection([],{
                 model: FilmModel
             });
-            $.getJSON('demo/videos.json', function(data){
-                self.collection.reset(data);
-            })
+            var len=200;
+            for(var i=0;i<len;i++){
+                this.collection.add({
+                    "title": "Big Buck Bunny "+i,
+                    "url": "http://smartimmo.ru/uploaded/big_buck_bunny_480p_h264.mp4",
+                    "type": "vod"
+                });
+            }
             self.collection.on('select', function(model){
                 Player.play(model.toJSON());
             });
         },
+
         // handler for click event
         onItemClick: function (e) {
             var index = $(e.currentTarget).index();
-            Player.play(App.videos[index]);
+            Player.play(this.collection.at(index).toJSON());
         }
     });
 
