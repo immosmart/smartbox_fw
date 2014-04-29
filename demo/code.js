@@ -12,10 +12,16 @@
 
         init: function () {
             var self=this;
+
+            var len=200;
             this.collection = new Collection();
-            $.getJSON('demo/videos.json', function(data){
-                self.collection.reset(data);
-            })
+            for(var i=0;i<len;i++){
+                this.collection.add({
+                    "title": "Big Buck Bunny "+i,
+                    "url": "http://smartimmo.ru/uploaded/big_buck_bunny_480p_h264.mp4",
+                    "type": "vod"
+                });
+            }
         },
         // handler for click event
         onItemClick: function (e) {
