@@ -11,12 +11,16 @@
         },
 
         init: function () {
-            this.collection = new Collection(App.videos);
+            var self=this;
+            this.collection = new Collection();
+            $.getJSON('demo/videos.json', function(data){
+                self.collection.reset(data);
+            })
         },
         // handler for click event
         onItemClick: function (e) {
             var index = $(e.currentTarget).index();
-            Player.play(App.videos[index]);
+            Player.play(this.collection.at(index).toJSON());
         }
     });
 
