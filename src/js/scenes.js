@@ -2,13 +2,15 @@ SB(function () {
     $$nav.on();
 });
 
-window.App = TabsHead.create({
+window.App = new (TabsHead.extend({
     el: 'body',
     scenesIndexes: {},
     constructor: function () {
 
         var self = this;
-        ViewModel.prototype._constructor.apply(self, arguments);
+
+        Backbone.View.prototype.constructor.apply(self, arguments)
+        //ViewModel.prototype._constructor.apply();
 
 
         self.heads = [];
@@ -36,7 +38,7 @@ window.App = TabsHead.create({
 
         SB(function () {
             self.scenesIndexes[prototype.name] = self.views.length;
-            var scene = Scene.create(prototype);
+            var scene = new (Scene.extend(prototype))();
             self.add(null, scene.$el);
             if (prototype.isDefault) {
                 self.setScene(prototype.name);
@@ -49,10 +51,10 @@ window.App = TabsHead.create({
         this.show(this.scenesIndexes[name]);
     },
     show: function (index) {
-        this._super(index);
+        TabsHead.prototype.show.apply(this, arguments);
         this.currentScene = this.views[index];
     }
-});
+}))();
 
 
 window.Scene = TabContent.extend({

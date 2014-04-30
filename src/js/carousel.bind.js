@@ -1,20 +1,26 @@
 (function () {
-
-
     "use strict";
-    /*globals $, Observable, Collection, Computed, ViewModel*/
-    var BindsScrollCarousel = ViewModel.extend({
+
+
+    var BindsScrollCarousel = Backbone.Epoxy.View.extend({
         events: {
             'nav_key:enter': 'onEnter'
         },
         onEnter: function (e) {
             e.stopPropagation();
-            this.$el.children().eq(this.index()).click();
+            this.$el.children().eq(this.viewModel.get('index')).click();
         },
         mouseenter: function (e) {
-            this.index($(e.currentTarget).index());
+            this.viewModel.set('index', $(e.currentTarget).index());
         },
-        itemSelector: '.sr-item',
+        onClick: function (e) {
+            var index = $(e.currentTarget).index(),
+                collectionIndex = this.viewModel.get('page') + index;
+            this._collection.trigger('select', this._collection.at(collectionIndex), collectionIndex);
+        },
+
+
+        itemSelector: '',
         /**
          * Зацикливание
          */
@@ -37,8 +43,8 @@
             e.stopPropagation();
         },
         onPrev: function (e) {
-            if (this.canScrollBack() || this.index() > 0) {
-                if (this.page() === 0 && this.index() === 0) {
+            if (this.viewModel.get('canScrollBack') || this.viewModel.get('index') > 0) {
+                if (this.viewModel.get('page') === 0 && this.viewModel.get('index') === 0) {
                     this.showLast(e);
                 } else {
                     this.prev(e);
@@ -46,15 +52,17 @@
             }
         },
         onNext: function (e) {
-            var maxIndex,
-                index,
-                page;
+            var vm = this.viewModel,
+                maxPage = vm.get('maxPage'),
+                maxIndex,
+                index = vm.get('index'),
+                page = vm.get('page'), vm;
 
-            page = this.page();
-            index = this.index();
-            if (this.canScrollForw() || index < this.visibleLength) {
-                maxIndex = this.length() - this.maxPage() - 1;
-                if ((page == this.maxPage()) && (index == maxIndex)) {
+
+            if (vm.get('canScrollForw') || index < this.visibleLength) {
+                maxIndex = vm.get('length') - maxPage - 1;
+
+                if ((page == maxPage) && (index == maxIndex)) {
                     this.showFirst(e);
                 } else {
                     this.next(e);
@@ -65,12 +73,11 @@
             if (e) {
                 e.stopPropagation();
             }
-            if (this.page() !== 0) {
-                this.slice.reset(this.collection.models.slice(0, this.visibleLength));
-                this.page(0);
+            if (this.viewModel.get('page') !== 0) {
+                this.collection.reset(this._collection.models.slice(0, this.visibleLength));
+                this.viewModel.set('page', 0);
             }
-            this.index(0);
-            this.index.fire();
+            this.viewModel.set('index', 0);
         },
         showLast: function (e) {
             if (e) {
@@ -81,32 +88,32 @@
                 maxPage,
                 length;
 
-            length = this.length();
-            maxIndex = length - this.maxPage() - 1;
+            length = this.viewModel.get('length')
+            maxPage = this.viewModel.get('maxPage');
+            maxIndex = length - maxPage - 1;
             sliceStart = length - this.visibleLength;
-            maxPage = this.maxPage();
 
-            if (this.page() !== maxPage) {
-                this.slice.reset(this.collection.models.slice(sliceStart, length));
-                this.page(maxPage);
+            if (this.viewModel.get('page') !== maxPage) {
+                this.collection.reset(this._collection.models.slice(sliceStart, length));
+                this.viewModel.set('page', maxPage);
             }
-            this.index(maxIndex);
-            this.index.fire();
+            this.viewModel.set('index', maxIndex);
         },
         next: function (e) {
             if (e) {
                 e.stopPropagation();
             }
-            if (this.index() + 1 >= this.slice.length && !this.canScrollForw()) {
+            var vm = this.viewModel, index = vm.get('index');
+            if (index + 1 >= this.collection.length && !vm.get('canScrollForw')) {
                 return this;
             }
-            if (this.visibleLength - this.index() - 1 <= this.offsetNext) {
+            if (this.visibleLength - index - 1 <= this.offsetNext) {
                 this.shiftNext();
-                this.index.fire();
+                vm.trigger('change:index', vm, index);
                 return this;
             }
-            if (this.index() < this.visibleLength - 1) {
-                this.index(this.index() + 1);
+            if (index < this.visibleLength - 1) {
+                vm.set('index', index + 1);
             }
             return this;
         },
@@ -114,50 +121,67 @@
             if (e) {
                 e.stopPropagation();
             }
-            if (this.index() <= this.offsetNext) {
+            var vm = this.viewModel, index = vm.get('index');
+            if (index <= this.offsetNext) {
                 this.shiftPrev();
-                this.index.fire();
+                vm.trigger('change:index', vm, index);
                 return this;
             }
-            if (this.index() > 0) {
-                this.index(this.index() - 1);
+            if (index > 0) {
+                vm.set('index', index - 1);
             }
             return this;
         },
         shiftNext: function () {
-            if (!this.canScrollForw()) {
+            var vm = this.viewModel;
+            if (!vm.get('canScrollForw')) {
                 return this;
             }
-            this.slice.push(this.collection.at(this.page() + this.visibleLength)).shift();
-            this.page(this.page() + 1);
+            var page = vm.get('page');
+            this.collection.push(this._collection.at(page + this.visibleLength))
+            this.collection.shift();
+            vm.set('page', page + 1);
             return this;
         },
         shiftPrev: function () {
-            if (!this.canScrollBack()) {
+            var vm = this.viewModel;
+            if (!vm.get('canScrollBack')) {
                 return this;
             }
-            this.page(this.page() - 1);
-            this.slice.unshift(this.collection.at(this.page())).pop();
+            var page = vm.get('page') - 1;
+
+            //console.log(this.collection.indexOf(this._collection.at(page)));
+            this.collection.unshift(this._collection.at(page));
+            this.collection.pop();
+            //console.log(this._collection.at(page), this.collection.length);
+            vm.set('page', page);
+
+            //console.log(this.collection.length);
             return this;
         },
         setPage: function (page) {
-            if (page > this.maxPage()) {
-                page = this.maxPage();
+            var maxPage = this.viewModel.get('maxPage')
+            if (page > maxPage) {
+                page = maxPage;
             }
-            this.slice.reset(this.collection.models.slice(page, page + this.visibleLength));
-            this.page(page);
+            this.collection.reset(this._collection.models.slice(page, page + this.visibleLength));
+            this.viewModel.set('page', page);
         },
-        initialize: function () {
+        initialize: function (options) {
             var self = this,
-                _index = Observable(0),
                 $cur = $();
 
 
-            if (this.options.size) {
-                this.visibleLength = this.options.size;
+            this.itemView = Backbone.Epoxy.View.extend({
+                el: options.template
+            });
+
+
+            if (options.size) {
+                this.visibleLength = options.size;
             }
 
-            _.extend(this.events, this.options.direction == 'vertical' ? {
+            _.extend(this.events, options.direction == 'vertical' ? {
                 'nav_key:up': 'onPrev',
                 'nav_key:down': 'onNext'
             } : {
@@ -165,88 +189,116 @@
                 'nav_key:right': 'onNext'
             });
 
-            this.events['mouseenter .' + this.options.className] = 'mouseenter'
+            this.events['mouseenter .' + options.className] = 'mouseenter';
+            this.events['click .' + options.className] = 'onClick';
+
+            this.itemSelector = options.className;
 
             this.delegateEvents();
 
             this.$container = this.containerSelector ? this.$(this.containerSelector) : this.$el;
-            this.length = Observable(this.collection.length);
-            this.slice = Collection.create({
-                model: this.collection.model
-            }, this.collection.models.slice(0, this.visibleLength));
 
-            this.collection.on({
+
+            this._collection = options.collection;
+            this.collection = new Backbone.Collection(this.collection.models.slice(0, this.visibleLength), {
+                model: options.collection
+            });
+
+
+            this._collection.on({
                 add: function () {
-                    this.length(this.collection.length);
+                    this.viewModel.set('length', this._collection.length);
                 },
                 cut: function () {
-                    this.length(this.collection.length);
+                    this.viewModel.set('length', this._collection.length);
                 },
                 reset: function () {
-                    this.length(this.collection.length);
-                    this.slice.reset(this.collection.models.slice(0, this.visibleLength));
-                    this.page(0);
-                    this.index(0);
-                    this.index.fire();
+                    this.viewModel.set('length', this._collection.length);
+                    this.collection.reset(this._collection.models.slice(0, this.visibleLength));
+                    self.viewModel.set('page', 0);
+                    self.viewModel.set('index', 0);
                 }
             }, this);
 
 
-            this.index = Computed({
-                get: function () {
-                    return _index();
+            this.viewModel = new (Backbone.Epoxy.Model.extend({
+                defaults: {
+                    _index: undefined,
+                    page: 0,
+                    length: 0
                 },
-                set: function (val) {
-
-                    if (val < 0) {
-                        val = 0;
+                computeds: {
+                    index: {
+                        deps: ['_index'],
+                        get: function (index) {
+                            return index;
+                        },
+                        set: function (value) {
+                            if (value < 0) {
+                                value = 0;
+                            }
+                            if (value >= self.visibleLength) {
+                                value = self.visibleLength - 1;
+                            }
+                            if (value >= self.collection.length) {
+                                value = self.collection.length - 1;
+                            }
+                            return {
+                                _index: value
+                            }
+                        }
+                    },
+                    maxPage: function () {
+                        var val = this.get('length') - self.visibleLength;
+                        return val < 0 ? 0 : val;
+                    },
+                    canScrollForw: {
+                        deps: ['length', 'page', 'maxPage'],
+                        get: function (length, page, maxPage) {
+                            if (self.navLoop && length > 1) {
+                                return true;
+                            }
+                            return page < maxPage;
+                        }
+                    },
+                    canScrollBack: {
+                        deps: ['length', 'page'],
+                        get: function (length, page) {
+                            if (self.navLoop && length > 1) {
+                                return true;
+                            }
+                            return page > 0;
+                        }
+                    },
+                    current: {
+                        deps: ['page', 'index'],
+                        get: function (page, index) {
+                            return self.collection.at(page + index);
+                        }
                     }
-                    if (val >= self.visibleLength) {
-                        val = self.visibleLength - 1;
-                    }
-                    if (val >= self.slice.length) {
-                        val = self.slice.length - 1;
-                    }
-
-                    _index(val);
                 }
-            });
+            }))();
 
-            this.index.subscribe(function (val) {
+            this.viewModel.set('length', this._collection.length);
+
+            this.viewModel.on('change:index', function (model, val) {
                 $cur.removeClass('cur');
                 $cur = self.$container.children().eq(val).addClass('cur');
             });
 
-            this.page = Observable(0);
+
+            _.defer(function () {
+                self.viewModel.set('index', 0);
+            });
+
             if (!this.disableVoiceRefresh) {
-                this.page.subscribe(function () {
+                this.viewModel.on('change:page', function () {
                     $$voice.refresh();
                 });
             }
-            this.maxPage = Computed(function () {
-                var val = self.length() - self.visibleLength;
-                return val < 0 ? 0 : val;
-            });
-
-            this.canScrollForw = Computed(function () {
-                if (self.navLoop && self.length() > 1) {
-                    return true;
-                }
-                return self.page() < self.maxPage();
-            });
-            this.canScrollBack = Computed(function () {
-                if (self.navLoop && self.length() > 1) {
-                    return true;
-                }
-                return self.page() > 0;
-            });
-
-            this.current = Computed(function () {
-                return self.collection.at(self.page() + self.index());
-            });
 
             if (this.enableScrollBar) {
-                this.bindScrollBar();
+                // this.bindScrollBar();
             }
         },
         bindScrollBar: function () {
@@ -261,7 +313,7 @@
                 return '0%';
             });
             this.scrollBarOffset = Computed(function () {
-                var page = self.page(),
+                var page = self.viewModel.get('page'),
                     length = self.length();
 
                 if (length > self.visibleLength) {
@@ -285,8 +337,11 @@
                 this.setPage(index);
             }
 
-            this.index(this.slice.indexOf(model));
+            this.index(this.collection.indexOf(model));
             this.index.fire();
+        },
+        bindings: {
+            ':el': 'collection:$collection'
         }
     });
 
@@ -295,28 +350,37 @@
     var views = {};
 
 
-    ViewModel.binds.carouselList = function ($el, value, context, addArgs) {
-        var options = this.parseOptionsObject(value);
-        var size = options.size;
-        var direction = options.direction || 'vertical';
+    Backbone.Epoxy.binding.addHandler('carouselList', {
+        init: function ($el, value, bindings, context) {
 
-        var collection = context[options.collection || 'collection'];
+            $el.attr('data-bind', '');
+            var options = value;
+            var size = options.size;
+            var direction = options.direction || 'vertical';
 
-        var view = new BindsScrollCarousel({
-            el: $el,
-            size: size,
-            direction: direction,
-            className: options.className || $el.children()[0].className,
-            collection: collection
-        });
+            var className = options.className || $el.children()[0].className;
 
-        if ($el[0].id) {
-            views[$el[0].id] = view;
+
+            var template = $el.html();
+
+            $el.find('[data-bind]').attr('data-bind', 'html: ""');
+            $el.empty();
+
+            var view = new BindsScrollCarousel({
+                el: $el,
+                size: size,
+                direction: direction,
+                className: className,
+                collection: bindings.$collection(),
+                template: template
+            });
+
+            if ($el[0].id) {
+                views[$el[0].id] = view;
+            }
+
         }
-
-        ViewModel.binds.eachModel.call(ViewModel, $el, 'slice' + (options.template ? ', ' + options.template : ''), view, addArgs);
-
-    };
+    });
 
 
 }());

@@ -53,19 +53,20 @@
 
 #### Примеры
 ```js
-var tabView1 = TabContent.create({
+var TabView1= TabContent.extend({
     el: '#tab1',
     init: function(){
         this.$('.loader').show();
     }
 });
+var tabView1 = new TabView1();
 ```
 
 * * *
 
 ###`focus()`
 
-Вызывается из класса TabsHead после клика по вкладке. Может быть переопределена для дополнительных действий с учетом вызова `this._super()`
+Вызывается из класса TabsHead после клика по вкладке. Может быть переопределена для дополнительных действий с учетом вызова `TabsHead.prototype.focus.apply(this, arguments)`
 По умолчанию вызывает при первом вызове `init()`. И `parse()` в случае если выставлен флаг `lazyParseBinds`
 
 * * *

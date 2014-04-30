@@ -2,19 +2,26 @@
     "use strict";
 
 
+    var FilmModel=Backbone.Epoxy.Model.extend({
+        defaults: {
+            title:""
+        }
+    });
+
     App.addScene({
         name: 'videos',
         isDefault: true,
         el: '.js-scene-video',
-        events: {
-            'click .video-item': 'onItemClick'
-        },
 
-        init: function () {
+
+        initialize: function () {
+
             var self=this;
 
+            self.collection = new Backbone.Collection([],{
+                model: FilmModel
+            });
             var len=200;
-            this.collection = new Collection();
             for(var i=0;i<len;i++){
                 this.collection.add({
                     "title": "Big Buck Bunny "+i,
@@ -22,7 +29,11 @@
                     "type": "vod"
                 });
             }
+            self.collection.on('select', function(model){
+                Player.play(model.toJSON());
+            });
         },
+
         // handler for click event
         onItemClick: function (e) {
             var index = $(e.currentTarget).index();
@@ -72,14 +83,14 @@
             'nav_focus .navigation-item': 'onFocus',
             'nav_blur .navigation-item': 'onBlur'
         },
+        initialize: function(){
+            this.$info=this.$('.navigation-info');
+        },
         onFocus: function (e) {
             this.$info.html(e.currentTarget.innerHTML);
         },
         onBlur: function (e) {
             this.$info.html('');
-        },
-        shortcuts: {
-            $info: '.navigation-info'
         }
     });
 
@@ -95,7 +106,7 @@
         App.setScenesContainer('.scenes-wrapper');
         App.setHeader('.menu-items', '.menu-item');
 
-        ViewModel.create({
+        new (Backbone.View.extend({
             events: {
                 'nav_key:blue': 'toggleView',
                 'nav_key:stop': function () {
@@ -110,7 +121,6 @@
                     SB.exit();
                 }
             },
-            autoParseBinds: true,
             el: 'body',
             shortcuts: {
                 $wrap: '.wrap'
@@ -125,7 +135,7 @@
                 }
                 this.isShown = !this.isShown;
             }
-        });
+        }))();
 
         // toggling background when player start/stop
         Player.on('ready', function () {
